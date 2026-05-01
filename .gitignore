@@ -1,14 +1,32 @@
 # Virtual environment
 venv/
+env/
+ENV/
+.venv/
+
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
-env/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
 .coverage
 .coverage.*
 .cache
@@ -16,13 +34,15 @@ nosetests.xml
 coverage.xml
 *.cover
 *.log
-.git
-.mypy_cache
-.pytest_cache
-.hypothesis
+.tox/
+.pytest_cache/
+.mypy_cache/
 
 # Environment variables
 .env
+.env.local
+.env.production
+.env.staging
 
 # Firebase credentials
 firebase-service-account.json
@@ -36,7 +56,19 @@ firebase-service-account.json
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
