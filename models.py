@@ -37,8 +37,7 @@ class AnalyzeResponse(VulnerabilityReport):
 
 
 class AuthLoginRequest(BaseModel):
-    email: str
-    firebase_uid: Optional[str] = None
+    id_token: str
 
 
 class AuthRegisterRequest(BaseModel):

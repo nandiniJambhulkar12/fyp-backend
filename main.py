@@ -7,6 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+import firebase_admin
+from firebase_admin import credentials
+
 from config import get_settings
 from routes.auth import router as auth_router
 from routes.analyze import router as analyze_router
@@ -22,6 +25,14 @@ logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    settings = get_settings()
+    if settings.firebase_service_account_path:
+        try:
+            cred = credentials.Certificate(settings.firebase_service_account_path)
+            firebase_admin.initialize_app(cred)
+            logger.info("Firebase initialized successfully")
+        except Exception as e:
+            logger.error(f"Failed to initialize Firebase: {e}")
     queue = get_analysis_queue(settings.analysis_queue_workers, settings.scan_cooldown_seconds)
     await queue.start()
     logger.info(

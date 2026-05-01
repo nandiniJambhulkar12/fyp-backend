@@ -11,8 +11,7 @@ from models import (
     UserProfile,
     VerifyStatusRequest,
 )
-from utils.local_store import LocalJSONStore
-from utils.token_manager import TokenManager
+from utils.firebase_auth import verify_firebase_token
 
 
 router = APIRouter(prefix="/auth")
@@ -59,10 +58,18 @@ async def register_user(payload: AuthRegisterRequest):
 
 @router.post("/login", response_model=TokenResponse)
 async def login_user(payload: AuthLoginRequest):
+    # Verify Firebase token
+    decoded_token = verify_firebase_token(payload.id_token)
+    email = decoded_token.get("email")
+    firebase_uid = decoded_token.get("uid")
+    
+    if not email or not firebase_uid:
+        raise HTTPException(status_code=400, detail="Invalid token: missing email or uid")
+    
     user = get_store().register_user(
-        email=payload.email,
-        name=payload.email.split("@")[0],
-        firebase_uid=payload.firebase_uid,
+        email=email,
+        name=decoded_token.get("name", email.split("@")[0]),
+        firebase_uid=firebase_uid,
     )
     if not user.active:
         raise HTTPException(status_code=403, detail="Account is inactive")

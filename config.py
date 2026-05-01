@@ -48,6 +48,7 @@ class Settings(BaseSettings):
         env="CORS_ORIGINS",
     )
     enable_legacy_response_fields: bool = Field(True, env="ENABLE_LEGACY_RESPONSE_FIELDS")
+    firebase_service_account_path: str = Field("firebase-service-account.json", env="FIREBASE_SERVICE_ACCOUNT_PATH")
 
     class Config:
         env_file = ".env"
